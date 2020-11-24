@@ -1,114 +1,56 @@
 package com.games.yatzy;
 
+import java.util.Arrays;
+
 public class Yatzy {
 
-    public static int chance(int d1, int d2, int d3, int d4, int d5) {
-        int total = 0;
-        total += d1;
-        total += d2;
-        total += d3;
-        total += d4;
-        total += d5;
-        return total;
-    }
+    private final int[] dice;
 
-    public static int yatzy(int... dice) {
-        int[] counts = new int[6];
-        for (int die : dice)
-            counts[die - 1]++;
-        for (int i = 0; i != 6; i++)
-            if (counts[i] == 5)
-                return 50;
-        return 0;
-    }
-
-    public static int ones(int d1, int d2, int d3, int d4, int d5) {
-        int sum = 0;
-        if (d1 == 1) sum++;
-        if (d2 == 1) sum++;
-        if (d3 == 1) sum++;
-        if (d4 == 1) sum++;
-        if (d5 == 1)
-            sum++;
-
-        return sum;
-    }
-
-    public static int twos(int d1, int d2, int d3, int d4, int d5) {
-        int sum = 0;
-        if (d1 == 2) sum += 2;
-        if (d2 == 2) sum += 2;
-        if (d3 == 2) sum += 2;
-        if (d4 == 2) sum += 2;
-        if (d5 == 2) sum += 2;
-        return sum;
-    }
-
-    public static int threes(int d1, int d2, int d3, int d4, int d5) {
-        int s;
-        s = 0;
-        if (d1 == 3) s += 3;
-        if (d2 == 3) s += 3;
-        if (d3 == 3) s += 3;
-        if (d4 == 3) s += 3;
-        if (d5 == 3) s += 3;
-        return s;
-    }
-
-    protected int[] dice;
-
-    public Yatzy(int d1, int d2, int d3, int d4, int _5) {
+    public Yatzy(int d1, int d2, int d3, int d4, int d5) {
         dice = new int[5];
         dice[0] = d1;
         dice[1] = d2;
         dice[2] = d3;
         dice[3] = d4;
-        dice[4] = _5;
+        dice[4] = d5;
     }
 
-    public int fours() {
-        int sum;
-        sum = 0;
-        for (int at = 0; at != 5; at++) {
-            if (dice[at] == 4) {
-                sum += 4;
+    public static int chance(int d1, int d2, int d3, int d4, int d5) {
+        return d1 + d2 + d3 + d4 + d5;
+    }
+
+    public static int yatzy(int... dice) {
+        int[] counts = new int[6];
+
+        for (int die : dice) {
+            counts[die - 1]++;
+            for (int i = 0; i != 6; i++) {
+                if (counts[i] == 5)
+                    return 50;
             }
         }
-        return sum;
+
+        return 0;
     }
 
-    public int fives() {
-        int s = 0;
-        int i;
-        for (i = 0; i < dice.length; i++)
-            if (dice[i] == 5)
-                s = s + 5;
-        return s;
+    public int getPairOf(int number) {
+        return Arrays.stream(dice).filter(die -> die == number).map(die -> number).sum();
     }
 
-    public int sixes() {
-        int sum = 0;
-        for (int at = 0; at < dice.length; at++)
-            if (dice[at] == 6)
-                sum = sum + 6;
-        return sum;
-    }
-
-    public static int score_pair(int d1, int d2, int d3, int d4, int d5) {
+    public static int scorePair(int d1, int d2, int d3, int d4, int d5) {
         int[] counts = new int[6];
         counts[d1 - 1]++;
         counts[d2 - 1]++;
         counts[d3 - 1]++;
         counts[d4 - 1]++;
         counts[d5 - 1]++;
-        int at;
-        for (at = 0; at != 6; at++)
-            if (counts[6 - at - 1] >= 2)
-                return (6 - at) * 2;
+        for (int i = 0; i != 6; i++)
+            if (counts[6 - i - 1] >= 2)
+                return (6 - i) * 2;
         return 0;
     }
 
-    public static int two_pair(int d1, int d2, int d3, int d4, int d5) {
+    public static int twoPair(int d1, int d2, int d3, int d4, int d5) {
         int[] counts = new int[6];
         counts[d1 - 1]++;
         counts[d2 - 1]++;
@@ -128,11 +70,11 @@ public class Yatzy {
             return 0;
     }
 
-    public static int four_of_a_kind(int _1, int _2, int d3, int d4, int d5) {
+    public static int fourOfAKind(int d1, int d2, int d3, int d4, int d5) {
         int[] tallies;
         tallies = new int[6];
-        tallies[_1 - 1]++;
-        tallies[_2 - 1]++;
+        tallies[d1 - 1]++;
+        tallies[d2 - 1]++;
         tallies[d3 - 1]++;
         tallies[d4 - 1]++;
         tallies[d5 - 1]++;
@@ -142,7 +84,7 @@ public class Yatzy {
         return 0;
     }
 
-    public static int three_of_a_kind(int d1, int d2, int d3, int d4, int d5) {
+    public static int threeOfAKind(int d1, int d2, int d3, int d4, int d5) {
         int[] t;
         t = new int[6];
         t[d1 - 1]++;
