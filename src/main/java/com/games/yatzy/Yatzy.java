@@ -33,6 +33,10 @@ public class Yatzy {
         return getOfAKind(diceHand, 3).findFirst().orElse(0) * 3;
     }
 
+    public static int smallStraight(DiceHand diceHand) {
+        return getCount(diceHand).entrySet().stream().anyMatch(i -> i.getValue() > 1) ? 0 : 15;
+    }
+
     public static int twoPair(int d1, int d2, int d3, int d4, int d5) {
         int[] counts = new int[6];
         counts[d1 - 1]++;
@@ -51,23 +55,6 @@ public class Yatzy {
             return score * 2;
         else
             return 0;
-    }
-
-    public static int smallStraight(int d1, int d2, int d3, int d4, int d5) {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[d1 - 1] += 1;
-        tallies[d2 - 1] += 1;
-        tallies[d3 - 1] += 1;
-        tallies[d4 - 1] += 1;
-        tallies[d5 - 1] += 1;
-        if (tallies[0] == 1 &&
-                tallies[1] == 1 &&
-                tallies[2] == 1 &&
-                tallies[3] == 1 &&
-                tallies[4] == 1)
-            return 15;
-        return 0;
     }
 
     public static int largeStraight(int d1, int d2, int d3, int d4, int d5) {
@@ -146,10 +133,6 @@ class DiceHand implements Iterable<Integer> {
 
     public Stream<Integer> stream() {
         return IntStream.of(this.dice).boxed();
-    }
-
-    public int getDiceOf(int index) {
-        return dice[index];
     }
 
     @Override
