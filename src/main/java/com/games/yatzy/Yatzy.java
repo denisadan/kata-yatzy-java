@@ -1,53 +1,33 @@
 package com.games.yatzy;
 
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static java.util.Map.*;
+import static java.util.stream.Collectors.*;
 
 public class Yatzy {
 
-    private final int[] dice;
-
-    public Yatzy(int d1, int d2, int d3, int d4, int d5) {
-        dice = new int[5];
-        dice[0] = d1;
-        dice[1] = d2;
-        dice[2] = d3;
-        dice[3] = d4;
-        dice[4] = d5;
+    public static int chance(DiceHand diceHand) {
+        return diceHand.stream().mapToInt(Integer::intValue).sum();
     }
 
-    public static int chance(int d1, int d2, int d3, int d4, int d5) {
-        return d1 + d2 + d3 + d4 + d5;
+    public static int yatzy(DiceHand dice) {
+        return dice.stream().distinct().count() == 1 ? 50 : 0;
     }
 
-    public static int yatzy(int... dice) {
-        int[] counts = new int[6];
-
-        for (int die : dice) {
-            counts[die - 1]++;
-            for (int i = 0; i != 6; i++) {
-                if (counts[i] == 5)
-                    return 50;
-            }
-        }
-
-        return 0;
+    public static int getSumOf(DiceHand dice, int number) {
+        return dice.stream().filter(i -> i == number).mapToInt(die -> number).sum();
     }
 
-    public int getPairOf(int number) {
-        return Arrays.stream(dice).filter(die -> die == number).map(die -> number).sum();
-    }
 
-    public static int scorePair(int d1, int d2, int d3, int d4, int d5) {
-        int[] counts = new int[6];
-        counts[d1 - 1]++;
-        counts[d2 - 1]++;
-        counts[d3 - 1]++;
-        counts[d4 - 1]++;
-        counts[d5 - 1]++;
-        for (int i = 0; i != 6; i++)
-            if (counts[6 - i - 1] >= 2)
-                return (6 - i) * 2;
-        return 0;
+    public static int scorePair(DiceHand diceHand) {
+        OptionalInt maxDie = diceHand.stream().collect(groupingBy(i -> i, counting()))
+                .entrySet().stream().filter(i -> i.getValue() >= 2)
+                .mapToInt(Entry::getKey).max();
+
+        return maxDie.orElse(0) * 2;
     }
 
     public static int twoPair(int d1, int d2, int d3, int d4, int d5) {
@@ -164,6 +144,33 @@ public class Yatzy {
             return _2_at * 2 + _3_at * 3;
         else
             return 0;
+    }
+}
+
+class DiceHand implements Iterable<Integer> {
+    private final int[] dice;
+
+    public DiceHand(int d1, int d2, int d3, int d4, int d5) {
+        this.dice = new int[]{d1, d2, d3, d4, d5};
+    }
+
+    @Override
+    public Iterator<Integer> iterator() {
+        return stream().iterator();
+
+    }
+
+    public Stream<Integer> stream() {
+        return IntStream.of(this.dice).boxed();
+    }
+
+    public int getDiceOf(int index) {
+        return dice[index];
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(dice);
     }
 }
 
