@@ -21,13 +21,16 @@ public class Yatzy {
         return dice.stream().filter(i -> i == number).mapToInt(die -> number).sum();
     }
 
-
     public static int scorePair(DiceHand diceHand) {
-        OptionalInt maxDie = diceHand.stream().collect(groupingBy(i -> i, counting()))
-                .entrySet().stream().filter(i -> i.getValue() >= 2)
-                .mapToInt(Entry::getKey).max();
+        return getOfAKind(diceHand, 2).max().orElse(0) * 2;
+    }
 
-        return maxDie.orElse(0) * 2;
+    public static int fourOfAKind(DiceHand diceHand) {
+        return getOfAKind(diceHand, 4).findFirst().orElse(0) * 4;
+    }
+
+    public static int threeOfAKind(DiceHand diceHand) {
+        return getOfAKind(diceHand, 3).findFirst().orElse(0) * 3;
     }
 
     public static int twoPair(int d1, int d2, int d3, int d4, int d5) {
@@ -48,34 +51,6 @@ public class Yatzy {
             return score * 2;
         else
             return 0;
-    }
-
-    public static int fourOfAKind(int d1, int d2, int d3, int d4, int d5) {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[d1 - 1]++;
-        tallies[d2 - 1]++;
-        tallies[d3 - 1]++;
-        tallies[d4 - 1]++;
-        tallies[d5 - 1]++;
-        for (int i = 0; i < 6; i++)
-            if (tallies[i] >= 4)
-                return (i + 1) * 4;
-        return 0;
-    }
-
-    public static int threeOfAKind(int d1, int d2, int d3, int d4, int d5) {
-        int[] t;
-        t = new int[6];
-        t[d1 - 1]++;
-        t[d2 - 1]++;
-        t[d3 - 1]++;
-        t[d4 - 1]++;
-        t[d5 - 1]++;
-        for (int i = 0; i < 6; i++)
-            if (t[i] >= 3)
-                return (i + 1) * 3;
-        return 0;
     }
 
     public static int smallStraight(int d1, int d2, int d3, int d4, int d5) {
@@ -145,6 +120,15 @@ public class Yatzy {
         else
             return 0;
     }
+
+    private static IntStream getOfAKind(DiceHand diceHand, int i1) {
+        return getCount(diceHand).entrySet().stream().filter(i -> i.getValue() >= i1).mapToInt(Entry::getKey);
+    }
+
+    private static Map<Integer, Long> getCount(DiceHand diceHand) {
+        return diceHand.stream().collect(groupingBy(i -> i, counting()));
+    }
+
 }
 
 class DiceHand implements Iterable<Integer> {
