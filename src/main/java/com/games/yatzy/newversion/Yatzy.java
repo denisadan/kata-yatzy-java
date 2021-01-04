@@ -1,4 +1,4 @@
-package com.games.yatzy;
+package com.games.yatzy.newversion;
 
 import java.util.*;
 import java.util.stream.IntStream;

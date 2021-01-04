@@ -1,4 +1,4 @@
-package com.games.yatzy;
+package com.games.yatzy.newversion;
 
 import org.junit.Test;
 
