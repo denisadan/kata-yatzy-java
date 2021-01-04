@@ -21,43 +21,43 @@ public class YatzyTest {
 
     @Test
     public void test_ones() {
-        assertEquals(1, Yatzy.getSumOf(new DiceHand(1, 2, 3, 4, 5), 1));
-        assertEquals(2, Yatzy.getSumOf(new DiceHand(1, 2, 1, 4, 5), 1));
-        assertEquals(0, Yatzy.getSumOf(new DiceHand(6, 2, 2, 4, 5), 1));
-        assertEquals(4, Yatzy.getSumOf(new DiceHand(1, 2, 1, 1, 1), 1));
+        assertEquals(1, Yatzy.getSumOfN(new DiceHand(1, 2, 3, 4, 5), 1));
+        assertEquals(2, Yatzy.getSumOfN(new DiceHand(1, 2, 1, 4, 5), 1));
+        assertEquals(0, Yatzy.getSumOfN(new DiceHand(6, 2, 2, 4, 5), 1));
+        assertEquals(4, Yatzy.getSumOfN(new DiceHand(1, 2, 1, 1, 1), 1));
     }
 
     @Test
     public void test_twos() {
-        assertEquals(4, Yatzy.getSumOf(new DiceHand(1, 2, 3, 2, 6), 2));
-        assertEquals(10, Yatzy.getSumOf(new DiceHand(2, 2, 2, 2, 2), 2));
+        assertEquals(4, Yatzy.getSumOfN(new DiceHand(1, 2, 3, 2, 6), 2));
+        assertEquals(10, Yatzy.getSumOfN(new DiceHand(2, 2, 2, 2, 2), 2));
     }
 
     @Test
     public void test_threes() {
-        assertEquals(6, Yatzy.getSumOf(new DiceHand(1, 2, 3, 2, 3), 3));
-        assertEquals(12, Yatzy.getSumOf(new DiceHand(2, 3, 3, 3, 3), 3));
+        assertEquals(6, Yatzy.getSumOfN(new DiceHand(1, 2, 3, 2, 3), 3));
+        assertEquals(12, Yatzy.getSumOfN(new DiceHand(2, 3, 3, 3, 3), 3));
     }
 
     @Test
     public void test_fours() {
-        assertEquals(12, Yatzy.getSumOf(new DiceHand(4, 4, 4, 5, 5), 4));
-        assertEquals(8, Yatzy.getSumOf(new DiceHand(4, 4, 5, 5, 5), 4));
-        assertEquals(4, Yatzy.getSumOf(new DiceHand(4, 5, 5, 5, 5), 4));
+        assertEquals(12, Yatzy.getSumOfN(new DiceHand(4, 4, 4, 5, 5), 4));
+        assertEquals(8, Yatzy.getSumOfN(new DiceHand(4, 4, 5, 5, 5), 4));
+        assertEquals(4, Yatzy.getSumOfN(new DiceHand(4, 5, 5, 5, 5), 4));
     }
 
     @Test
     public void test_fives() {
-        assertEquals(10, Yatzy.getSumOf(new DiceHand(4, 4, 4, 5, 5), 5));
-        assertEquals(15, Yatzy.getSumOf(new DiceHand(4, 4, 5, 5, 5), 5));
-        assertEquals(20, Yatzy.getSumOf(new DiceHand(4, 5, 5, 5, 5), 5));
+        assertEquals(10, Yatzy.getSumOfN(new DiceHand(4, 4, 4, 5, 5), 5));
+        assertEquals(15, Yatzy.getSumOfN(new DiceHand(4, 4, 5, 5, 5), 5));
+        assertEquals(20, Yatzy.getSumOfN(new DiceHand(4, 5, 5, 5, 5), 5));
     }
 
     @Test
     public void test_sixes() {
-        assertEquals(0, Yatzy.getSumOf(new DiceHand(4, 4, 4, 5, 5), 6));
-        assertEquals(6, Yatzy.getSumOf(new DiceHand(4, 4, 6, 5, 5), 6));
-        assertEquals(18, Yatzy.getSumOf(new DiceHand(6, 5, 6, 6, 5), 6));
+        assertEquals(0, Yatzy.getSumOfN(new DiceHand(4, 4, 4, 5, 5), 6));
+        assertEquals(6, Yatzy.getSumOfN(new DiceHand(4, 4, 6, 5, 5), 6));
+        assertEquals(18, Yatzy.getSumOfN(new DiceHand(6, 5, 6, 6, 5), 6));
     }
 
     @Test
@@ -71,10 +71,10 @@ public class YatzyTest {
 
     @Test
     public void test_two_pairs() {
-        assertEquals(16, Yatzy.twoPair(3, 3, 5, 4, 5));
-        assertEquals(16, Yatzy.twoPair(3, 3, 5, 5, 5));
-        assertEquals(0, Yatzy.twoPair(1, 2, 3, 4, 5));
-        assertEquals(0, Yatzy.twoPair(1, 1, 1, 1, 5));
+        assertEquals(16, Yatzy.twoPair(new DiceHand(3, 3, 5, 4, 5)));
+        assertEquals(16, Yatzy.twoPair(new DiceHand(3, 3, 5, 5, 5)));
+        assertEquals(0, Yatzy.twoPair(new DiceHand(1, 2, 3, 4, 5)));
+        assertEquals(0, Yatzy.twoPair(new DiceHand(1, 1, 1, 1, 5)));
     }
 
     @Test
@@ -98,19 +98,21 @@ public class YatzyTest {
         assertEquals(15, Yatzy.smallStraight(new DiceHand(2, 3, 4, 5, 1)));
         assertEquals(0, Yatzy.smallStraight(new DiceHand(1, 2, 2, 4, 5)));
         assertEquals(15, Yatzy.smallStraight(new DiceHand(5, 4, 3, 2, 1)));
+        assertEquals(0, Yatzy.smallStraight(new DiceHand(6, 2, 3, 4, 5)));
     }
 
     @Test
     public void test_largeStraight() {
-        assertEquals(20, Yatzy.largeStraight(6, 2, 3, 4, 5));
-        assertEquals(20, Yatzy.largeStraight(2, 3, 4, 5, 6));
-        assertEquals(0, Yatzy.largeStraight(1, 2, 2, 4, 5));
+        assertEquals(20, Yatzy.largeStraight(new DiceHand(6, 2, 3, 4, 5)));
+        assertEquals(20, Yatzy.largeStraight(new DiceHand(2, 3, 4, 5, 6)));
+        assertEquals(0, Yatzy.largeStraight(new DiceHand(1, 2, 2, 4, 5)));
     }
 
     @Test
     public void test_fullHouse() {
-        assertEquals(18, Yatzy.fullHouse(6, 2, 2, 2, 6));
-        assertEquals(0, Yatzy.fullHouse(2, 3, 4, 5, 6));
+        assertEquals(18, Yatzy.fullHouse(new DiceHand(6, 2, 2, 2, 6)));
+        assertEquals(9, Yatzy.fullHouse(new DiceHand(1, 1, 1, 3, 3)));
+        assertEquals(0, Yatzy.fullHouse(new DiceHand(2, 3, 4, 5, 6)));
     }
 
 }
